@@ -185,7 +185,9 @@ async function cmdLogin() {
 
   saveConfig({ serviceName });
   console.log(`Saved active service to ${CONFIG_FILE}`);
-  console.log(`\nYou can now connect with: psql service=${serviceName}`);
+  console.log(`\nYou can now connect with:`);
+  console.log(`  psql service=${serviceName} -c 'SELECT 1'`);
+  console.log(`  npx supabase-extras execute ${serviceName} 'SELECT 1'`);
   console.log(`(If psql is not installed: sudo apt-get install -y postgresql-client)`);
 }
 
