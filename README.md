@@ -76,11 +76,17 @@ npx psql-extras execute supabase 'SELECT id, email FROM auth.users' --json
 
 ## Installation
 
-This package is used locally via `npx`. No global install needed.
+Available on [npmjs.com](https://www.npmjs.com/package/psql-extras). No install required — run directly with `npx`:
 
 ```bash
 npx psql-extras login           # generic Postgres
 npx psql-extras login-supabase  # Supabase-specific
+```
+
+Or install globally:
+
+```bash
+npm install -g psql-extras
 ```
 
 ## Files written
