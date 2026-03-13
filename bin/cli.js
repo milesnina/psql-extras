@@ -86,6 +86,65 @@ function writePgPass(host, port, dbname, user, password) {
   chmodSync(PG_PASS_FILE, 0o600);
 }
 
+async function cmdLoginGeneral() {
+  console.log("PostgreSQL Login");
+  console.log("────────────────");
+
+  let serviceName;
+  while (true) {
+    serviceName = await prompt("PG service name");
+    if (!serviceName) {
+      console.log("Service name is required.");
+      continue;
+    }
+    if (existsSync(PG_SERVICE_FILE)) {
+      const existing = readFileSync(PG_SERVICE_FILE, "utf8");
+      if (new RegExp(`^\\[${serviceName}\\]`, "m").test(existing)) {
+        console.log(`Service [${serviceName}] already exists in ${PG_SERVICE_FILE}. Choose a different name.`);
+        continue;
+      }
+    }
+    break;
+  }
+
+  let host;
+  while (true) {
+    host = await prompt("Host");
+    if (!host) {
+      console.log("Host is required.");
+      continue;
+    }
+    if (!host.includes(".")) {
+      console.log("That doesn't look like a valid host. Please enter a hostname.");
+      continue;
+    }
+    break;
+  }
+
+  const port = await prompt("Port", "5432");
+  const dbname = await prompt("Database name", "postgres");
+  const user = await prompt("Username", "postgres");
+  const password = await promptPassword("Password");
+
+  if (!host || !password) {
+    console.error("Error: host and password are required.");
+    process.exit(1);
+  }
+
+  writePgService(serviceName, host, port, dbname, user);
+  console.log(`Saved service [${serviceName}] to ${PG_SERVICE_FILE}`);
+
+  writePgPass(host, port, dbname, user, password);
+  console.log(`Saved password to ${PG_PASS_FILE}`);
+
+  saveConfig({ serviceName });
+  console.log(`Saved active service to ${CONFIG_FILE}`);
+  console.log(`\nYou can now connect with:`);
+  console.log(`  psql service=${serviceName} -c 'SELECT 1'`);
+  console.log(`  npx supabase-extras execute ${serviceName} 'SELECT 1'`);
+  console.log(`(If psql is not installed: sudo apt-get install -y postgresql-client)`);
+}
+
 async function cmdLogin() {
   console.log("Supabase Extras Login");
   console.log("─────────────────────");
@@ -273,7 +332,9 @@ const command = args[0];
 const flags = { json: args.includes("--json") };
 const positional = args.filter((a) => !a.startsWith("--"));
 
-if (command === "login-supabase") {
+if (command === "login") {
+  await cmdLoginGeneral();
+} else if (command === "login-supabase") {
   await cmdLogin();
 } else if (command === "execute") {
   const serviceName = positional[1];
@@ -287,13 +348,15 @@ if (command === "login-supabase") {
   console.log(`supabase-extras <command>
 
 Commands:
-  login-supabase     Configure a PostgreSQL service (writes ~/.pg_service.conf and ~/.pgpass)
+  login              Configure a generic PostgreSQL service (writes ~/.pg_service.conf and ~/.pgpass)
+  login-supabase     Configure a Supabase PostgreSQL service (writes ~/.pg_service.conf and ~/.pgpass)
   execute <service> '<SQL>'    Run a SQL query against a service from ~/.pg_service.conf
 
 Flags:
   --json             Output results as JSON instead of a table
 
 Examples:
+  npx supabase-extras login
   npx supabase-extras login-supabase
   npx supabase-extras execute supabase 'SELECT * FROM auth.users LIMIT 10'
   npx supabase-extras execute 'SELECT * FROM public.profiles' --json

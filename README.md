@@ -4,6 +4,24 @@ CLI extras for Supabase — configure `psql` service connections and run SQL que
 
 ## Commands
 
+### `login`
+
+Interactively configure a named PostgreSQL service for any generic Postgres server.
+
+```bash
+npx supabase-extras login
+```
+
+You will be prompted for:
+- **PG service name** — a name you choose (e.g. `mydb`)
+- **Host** — the server hostname
+- **Port** — defaults to `5432`
+- **Database name** — defaults to `postgres`
+- **Username** — defaults to `postgres`
+- **Password**
+
+---
+
 ### `login-supabase`
 
 Interactively configure a named PostgreSQL service. Writes connection details to `~/.pg_service.conf` and the password to `~/.pgpass`.
@@ -61,7 +79,8 @@ npx supabase-extras execute supabase 'SELECT id, email FROM auth.users' --json
 This package is used locally via `npx`. No global install needed.
 
 ```bash
-npx supabase-extras login-supabase
+npx supabase-extras login           # generic Postgres
+npx supabase-extras login-supabase  # Supabase-specific
 ```
 
 ## Files written
