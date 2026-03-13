@@ -6,7 +6,7 @@ import { join } from "path";
 import { createConnection } from "../lib/db.js";
 import { printTable } from "../lib/table.js";
 
-const CONFIG_DIR = join(homedir(), ".config", "supabase-extras");
+const CONFIG_DIR = join(homedir(), ".config", "psql-extras");
 const CONFIG_FILE = join(CONFIG_DIR, "config.json");
 const PG_SERVICE_FILE = join(homedir(), ".pg_service.conf");
 const PG_PASS_FILE = join(homedir(), ".pgpass");
@@ -141,7 +141,7 @@ async function cmdLoginGeneral() {
   console.log(`Saved active service to ${CONFIG_FILE}`);
   console.log(`\nYou can now connect with:`);
   console.log(`  psql service=${serviceName} -c 'SELECT 1'`);
-  console.log(`  npx supabase-extras execute ${serviceName} 'SELECT 1'`);
+  console.log(`  npx psql-extras execute ${serviceName} 'SELECT 1'`);
   console.log(`(If psql is not installed: sudo apt-get install -y postgresql-client)`);
 }
 
@@ -246,14 +246,14 @@ async function cmdLogin() {
   console.log(`Saved active service to ${CONFIG_FILE}`);
   console.log(`\nYou can now connect with:`);
   console.log(`  psql service=${serviceName} -c 'SELECT 1'`);
-  console.log(`  npx supabase-extras execute ${serviceName} 'SELECT 1'`);
+  console.log(`  npx psql-extras execute ${serviceName} 'SELECT 1'`);
   console.log(`(If psql is not installed: sudo apt-get install -y postgresql-client)`);
 }
 
 async function cmdExecute(serviceName, sql, flags) {
   // Read connection details from pg_service.conf
   if (!existsSync(PG_SERVICE_FILE)) {
-    console.error(`${PG_SERVICE_FILE} not found. Run: npx supabase-extras login-supabase`);
+    console.error(`${PG_SERVICE_FILE} not found. Run: npx psql-extras login-supabase`);
     process.exit(1);
   }
 
@@ -293,7 +293,7 @@ async function cmdExecute(serviceName, sql, flags) {
       process.exit(1);
     }
   } else {
-    console.error(`${PG_PASS_FILE} not found. Run: npx supabase-extras login-supabase`);
+    console.error(`${PG_PASS_FILE} not found. Run: npx psql-extras login-supabase`);
     process.exit(1);
   }
 
@@ -340,12 +340,12 @@ if (command === "login") {
   const serviceName = positional[1];
   const sql = positional[2];
   if (!serviceName || !sql) {
-    console.error("Usage: supabase-extras execute <service-name> '<SQL>'");
+    console.error("Usage: psql-extras execute <service-name> '<SQL>'");
     process.exit(1);
   }
   await cmdExecute(serviceName, sql, flags);
 } else {
-  console.log(`supabase-extras <command>
+  console.log(`psql-extras <command>
 
 Commands:
   login              Configure a generic PostgreSQL service (writes ~/.pg_service.conf and ~/.pgpass)
@@ -356,9 +356,9 @@ Flags:
   --json             Output results as JSON instead of a table
 
 Examples:
-  npx supabase-extras login
-  npx supabase-extras login-supabase
-  npx supabase-extras execute supabase 'SELECT * FROM auth.users LIMIT 10'
-  npx supabase-extras execute 'SELECT * FROM public.profiles' --json
+  npx psql-extras login
+  npx psql-extras login-supabase
+  npx psql-extras execute supabase 'SELECT * FROM auth.users LIMIT 10'
+  npx psql-extras execute 'SELECT * FROM public.profiles' --json
 `);
 }

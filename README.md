@@ -1,4 +1,4 @@
-# supabase-extras
+# psql-extras
 
 CLI extras for Supabase — configure `psql` service connections and run SQL queries directly against your Supabase database.
 
@@ -9,7 +9,7 @@ CLI extras for Supabase — configure `psql` service connections and run SQL que
 Interactively configure a named PostgreSQL service for any generic Postgres server.
 
 ```bash
-npx supabase-extras login
+npx psql-extras login
 ```
 
 You will be prompted for:
@@ -27,7 +27,7 @@ You will be prompted for:
 Interactively configure a named PostgreSQL service. Writes connection details to `~/.pg_service.conf` and the password to `~/.pgpass`.
 
 ```bash
-npx supabase-extras login-supabase
+npx psql-extras login-supabase
 ```
 
 You will be prompted for:
@@ -54,7 +54,7 @@ psql service=supabase -c 'SELECT 1'
 Run a SQL query against a named service from `~/.pg_service.conf`.
 
 ```bash
-npx supabase-extras execute supabase 'SELECT * FROM auth.users LIMIT 10'
+npx psql-extras execute supabase 'SELECT * FROM auth.users LIMIT 10'
 ```
 
 Results are printed as a formatted table by default.
@@ -66,7 +66,7 @@ Results are printed as a formatted table by default.
 | `--json` | Output results as JSON instead of a table |
 
 ```bash
-npx supabase-extras execute supabase 'SELECT id, email FROM auth.users' --json
+npx psql-extras execute supabase 'SELECT id, email FROM auth.users' --json
 ```
 
 ## Prerequisites
@@ -79,8 +79,8 @@ npx supabase-extras execute supabase 'SELECT id, email FROM auth.users' --json
 This package is used locally via `npx`. No global install needed.
 
 ```bash
-npx supabase-extras login           # generic Postgres
-npx supabase-extras login-supabase  # Supabase-specific
+npx psql-extras login           # generic Postgres
+npx psql-extras login-supabase  # Supabase-specific
 ```
 
 ## Files written
@@ -89,4 +89,4 @@ npx supabase-extras login-supabase  # Supabase-specific
 |------|---------|
 | `~/.pg_service.conf` | Named connection entries read by psql and this CLI |
 | `~/.pgpass` | Passwords for those connections (chmod 600) |
-| `~/.config/supabase-extras/config.json` | Stores the active service name |
+| `~/.config/psql-extras/config.json` | Stores the active service name |

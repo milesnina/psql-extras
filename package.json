@@ -1,9 +1,9 @@
 {
-  "name": "supabase-extras",
+  "name": "psql-extras",
   "version": "1.0.0",
   "description": "CLI extras for Supabase (execute SQL, login)",
   "bin": {
-    "supabase-extras": "./bin/cli.js"
+    "psql-extras": "./bin/cli.js"
   },
   "type": "module",
   "dependencies": {
