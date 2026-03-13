@@ -332,7 +332,11 @@ const command = args[0];
 const flags = { json: args.includes("--json") };
 const positional = args.filter((a) => !a.startsWith("--"));
 
-if (command === "login") {
+if (args.includes("--version") || args.includes("-v")) {
+  const { version } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+  console.log(version);
+  process.exit(0);
+} else if (command === "login") {
   await cmdLoginGeneral();
 } else if (command === "login-supabase") {
   await cmdLogin();
