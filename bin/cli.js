@@ -194,7 +194,7 @@ async function cmdLogin() {
 async function cmdExecute(serviceName, sql, flags) {
   // Read connection details from pg_service.conf
   if (!existsSync(PG_SERVICE_FILE)) {
-    console.error(`${PG_SERVICE_FILE} not found. Run: npx supabase-extras login`);
+    console.error(`${PG_SERVICE_FILE} not found. Run: npx supabase-extras login-supabase`);
     process.exit(1);
   }
 
@@ -234,7 +234,7 @@ async function cmdExecute(serviceName, sql, flags) {
       process.exit(1);
     }
   } else {
-    console.error(`${PG_PASS_FILE} not found. Run: npx supabase-extras login`);
+    console.error(`${PG_PASS_FILE} not found. Run: npx supabase-extras login-supabase`);
     process.exit(1);
   }
 
@@ -273,7 +273,7 @@ const command = args[0];
 const flags = { json: args.includes("--json") };
 const positional = args.filter((a) => !a.startsWith("--"));
 
-if (command === "login") {
+if (command === "login-supabase") {
   await cmdLogin();
 } else if (command === "execute") {
   const serviceName = positional[1];
@@ -287,14 +287,14 @@ if (command === "login") {
   console.log(`supabase-extras <command>
 
 Commands:
-  login              Configure a PostgreSQL service (writes ~/.pg_service.conf and ~/.pgpass)
+  login-supabase     Configure a PostgreSQL service (writes ~/.pg_service.conf and ~/.pgpass)
   execute <service> '<SQL>'    Run a SQL query against a service from ~/.pg_service.conf
 
 Flags:
   --json             Output results as JSON instead of a table
 
 Examples:
-  npx supabase-extras login
+  npx supabase-extras login-supabase
   npx supabase-extras execute supabase 'SELECT * FROM auth.users LIMIT 10'
   npx supabase-extras execute 'SELECT * FROM public.profiles' --json
 `);

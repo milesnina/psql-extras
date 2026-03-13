@@ -4,12 +4,12 @@ CLI extras for Supabase — configure `psql` service connections and run SQL que
 
 ## Commands
 
-### `login`
+### `login-supabase`
 
 Interactively configure a named PostgreSQL service. Writes connection details to `~/.pg_service.conf` and the password to `~/.pgpass`.
 
 ```bash
-npx supabase-extras login
+npx supabase-extras login-supabase
 ```
 
 You will be prompted for:
@@ -61,7 +61,7 @@ npx supabase-extras execute supabase 'SELECT id, email FROM auth.users' --json
 This package is used locally via `npx`. No global install needed.
 
 ```bash
-npx supabase-extras login
+npx supabase-extras login-supabase
 ```
 
 ## Files written
