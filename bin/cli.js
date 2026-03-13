@@ -143,7 +143,7 @@ async function cmdLogin() {
   }
   // Pooler host can't be auto-filled (region unknown), show pattern as hint
   if (method === "pooler" && projectRef) {
-    console.log(`  Hint: pooler host format is aws-0-<region>.pooler.supabase.com (check supabase.com for your region)`);
+    console.log(`  Hint: pooler host format is aws-<int>-<region>.pooler.supabase.com (both int and region can be copied from supabase.com)`);
   }
   let host;
   while (true) {
